@@ -35,12 +35,21 @@ function showToast(message) {
 
 function setActivePage() {
   const page = (window.location.hash || "#home").slice(1).split("?")[0];
-  const known = ["home", "try", "pricing", "releases", "about"];
+  const known = ["home", "try", "pricing", "releases", "about", "privacy", "terms"];
   const target = known.includes(page) ? page : "home";
   document.body.dataset.page = target;
   $$(`[data-page]`).forEach((section) => { section.hidden = section.dataset.page !== target; });
   $$(`[data-nav]`).forEach((link) => link.classList.toggle("active", link.dataset.nav === target));
-  document.title = target === "home" ? "Buddy — Your AI companion" : `${target[0].toUpperCase()}${target.slice(1)} · Buddy`;
+  const titles = {
+    home: "Buddy — Your AI companion",
+    try: "Try · Buddy",
+    pricing: "Pricing · Buddy",
+    releases: "Releases · Buddy",
+    about: "About · Buddy",
+    privacy: "Privacy Policy · Buddy",
+    terms: "Terms of Service · Buddy",
+  };
+  document.title = titles[target] || "Buddy";
   if (target === "try") updateChatUI();
   // Hash navigation can otherwise jump straight past the shared header to
   // the section anchor. Scroll after the browser finishes its anchor jump.
